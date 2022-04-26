@@ -18,8 +18,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path='/teacher/:tId' element={<Edit />} />
             <Route path='/teacher/add' element={<Add />} />
-            <Route path='/:tName/student/:sId' element={<Edit />} />
-            <Route path='/:tName/student/add' element={<Add />} />
+            <Route path='/:tId/student/:sId' element={<Edit />} />
+            <Route path='/:tId/student/add' element={<Add />} />
           </Route>
         </Routes>
       </BrowserRouter>

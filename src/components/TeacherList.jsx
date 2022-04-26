@@ -27,7 +27,10 @@ const TeacherList = () => {
 
               <div className='ms-auto'>
                 {/* Add Student btn */}
-                <Link to='/teacher-1/student/add' className='btn btn-secondary'>
+                <Link
+                  to={`/${index1 + 1}/student/add`}
+                  className='btn btn-secondary'
+                >
                   Add Student
                 </Link>
 
@@ -44,7 +47,6 @@ const TeacherList = () => {
                   type='button'
                   className='btn btn-danger ms-3'
                   onClick={(e) => {
-                    e.stopPropagation()
                     removeTeacher(index1)
                   }}
                 >
@@ -65,10 +67,7 @@ const TeacherList = () => {
                     {/* edit Student btn */}
                     <Link
                       className='btn btn-warning'
-                      to={`/${teacher.name
-                        .toLowerCase()
-                        .split(' ')
-                        .join('-')}/student/id=${index2 + 1}`}
+                      to={`/${index1 + 1}/student/${index2 + 1}`}
                     >
                       edit
                     </Link>

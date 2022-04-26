@@ -38,9 +38,21 @@ export const GlobalProvider = ({ children }) => {
   const addTeacher = (teacher) => {
     dispatch({ type: 'ADD_TEACHER', payload: teacher })
   }
+  const updateTeacher = (tId, teacher) => {
+    console.log(tId, teacher)
+    dispatch({ type: 'UPDATE_TEACHER', payload: { tId, teacher } })
+  }
 
-  const removeStudent = (tId, sName) => {
-    dispatch({ type: 'REMOVE_STUDENT', payload: { tId, sName } })
+  const removeStudent = (tId, sId) => {
+    dispatch({ type: 'REMOVE_STUDENT', payload: { tId, sId } })
+  }
+
+  const addStudent = (tId, student) => {
+    dispatch({ type: 'ADD_STUDENT', payload: { tId, student } })
+  }
+
+  const updateStudent = (tId, sId, student) => {
+    dispatch({ type: 'UPDATE_STUDENT', payload: { tId, sId, student } })
   }
 
   return (
@@ -50,6 +62,9 @@ export const GlobalProvider = ({ children }) => {
         removeTeacher,
         removeStudent,
         addTeacher,
+        addStudent,
+        updateTeacher,
+        updateStudent,
       }}
     >
       {children}
