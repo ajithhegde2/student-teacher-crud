@@ -1,27 +1,9 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer, useState } from 'react'
 import AppReducer from './AppReducer'
+import api from '../api/teachers'
 
 // initial state
-const initialState = {
-  teachers: [
-    {
-      name: 'Teacher 1',
-      students: [{ name: 'student 1' }, { name: 'student 2' }],
-    },
-    {
-      name: 'Teacher 2',
-      students: [{ name: 'student 1' }, { name: 'student 1' }],
-    },
-    {
-      name: 'Teacher 3',
-      students: [{ name: 'student 1' }, { name: 'student 2' }],
-    },
-    {
-      name: 'Teacher 4',
-      students: [{ name: 'student 1' }, { name: 'student 2' }],
-    },
-  ],
-}
+const initialState = { teachers: [] }
 
 // Create context
 export const GlobalContext = createContext(initialState)
@@ -29,30 +11,51 @@ export const GlobalContext = createContext(initialState)
 // provider component
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState)
+  const [loading, setLoading] = useState(true)
+
+  const retriveTeachers = async () => {
+    const response = await api.get('/teachers')
+    return response.data
+  }
+
+  useEffect(() => {
+    const getAllTeachers = async () => {
+      const allTeachers = await retriveTeachers()
+
+      if (allTeachers) {
+        dispatch({ type: 'ADD_DATA', payload: allTeachers })
+        console.log(allTeachers)
+      }
+    }
+    getAllTeachers()
+    setLoading(false)
+  }, [])
 
   // Actions
-  const removeTeacher = (id) => {
+  const removeTeacher = async (id) => {
     dispatch({ type: 'REMOVE_TEACHER', payload: id })
   }
 
-  const addTeacher = (teacher) => {
-    dispatch({ type: 'ADD_TEACHER', payload: teacher })
+  const addTeacher = async (teacher) => {
+    dispatch({
+      type: 'ADD_TEACHER',
+      payload: { id: state.teachers.length + 1, ...teacher },
+    })
   }
-  const updateTeacher = (tId, teacher) => {
-    console.log(tId, teacher)
-    dispatch({ type: 'UPDATE_TEACHER', payload: { tId, teacher } })
-  }
-
-  const removeStudent = (tId, sId) => {
-    dispatch({ type: 'REMOVE_STUDENT', payload: { tId, sId } })
+  const updateTeacher = async (tId, teacher, id) => {
+    dispatch({ type: 'UPDATE_TEACHER', payload: { tId, teacher, id } })
   }
 
-  const addStudent = (tId, student) => {
-    dispatch({ type: 'ADD_STUDENT', payload: { tId, student } })
+  const removeStudent = async (tId, sId, id) => {
+    dispatch({ type: 'REMOVE_STUDENT', payload: { tId, sId, id } })
   }
 
-  const updateStudent = (tId, sId, student) => {
-    dispatch({ type: 'UPDATE_STUDENT', payload: { tId, sId, student } })
+  const addStudent = async (tId, student, id) => {
+    dispatch({ type: 'ADD_STUDENT', payload: { tId, student, id } })
+  }
+
+  const updateStudent = async (tId, sId, student, id) => {
+    dispatch({ type: 'UPDATE_STUDENT', payload: { tId, sId, student, id } })
   }
 
   return (
@@ -67,7 +70,17 @@ export const GlobalProvider = ({ children }) => {
         updateStudent,
       }}
     >
-      {children}
+      {loading ? (
+        <div className='d-flex justify-content-center '>
+          <h1 className=''> LOADING ...</h1>
+        </div>
+      ) : state ? (
+        children
+      ) : (
+        <div className='d-flex justify-content-center '>
+          <h1 className=''> OOPS! Something went Wrong</h1>
+        </div>
+      )}
     </GlobalContext.Provider>
   )
 }

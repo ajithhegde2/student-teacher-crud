@@ -47,7 +47,7 @@ const TeacherList = () => {
                   type='button'
                   className='btn btn-danger ms-3'
                   onClick={(e) => {
-                    removeTeacher(index1)
+                    removeTeacher(teacher.id)
                   }}
                 >
                   Delete
@@ -76,7 +76,7 @@ const TeacherList = () => {
                     <Button
                       type='button'
                       className='btn btn-danger ms-3'
-                      onClick={() => removeStudent(index1, index2)}
+                      onClick={() => removeStudent(index1, index2, teacher.id)}
                     >
                       Delete
                     </Button>

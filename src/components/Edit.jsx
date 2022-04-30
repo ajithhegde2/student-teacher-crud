@@ -14,9 +14,9 @@ const Add = () => {
 
   const onSubmit = () => {
     if (sId) {
-      updateStudent(tId - 1, sId - 1, name)
+      updateStudent(tId - 1, sId - 1, name, teachers[tId - 1].id)
     } else {
-      updateTeacher(tId - 1, name)
+      updateTeacher(tId - 1, name, teachers[tId - 1].id)
     }
     history('/')
   }

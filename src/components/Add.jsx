@@ -13,7 +13,7 @@ const Add = () => {
   const onSubmit = () => {
     if (tId) {
       const newStudent = { name }
-      addStudent(tId - 1, newStudent)
+      addStudent(tId - 1, newStudent, teachers[tId - 1].id)
     } else {
       const newTeacher = { name, students: [] }
       addTeacher(newTeacher)
